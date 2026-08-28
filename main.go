@@ -9,16 +9,15 @@ import (
 )
 
 func main() {
+	_ = telegram.Client{}
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 
-	// Клиент gotd
-	_ = telegram.Client{}
-
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("MTProto Bot Service is running!"))
+		w.Write([]byte("MTProto Server is active"))
 	})
 
 	fmt.Println("Server running on port:", port)
