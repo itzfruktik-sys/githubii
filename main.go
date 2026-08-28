@@ -9,7 +9,8 @@ import (
 )
 
 func main() {
-	_ = telegram.Client{}
+	// Проверяем импорт библиотеки
+	var _ telegram.Options
 
 	port := os.Getenv("PORT")
 	if port == "" {
