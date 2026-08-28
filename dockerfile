@@ -3,12 +3,11 @@ WORKDIR /app
 
 RUN apk add --no-cache git ca-certificates
 
-# Создаем модуль с нуля и явно скачиваем готовую библиотеку gotd
 RUN go mod init my-tg-server
-RUN go get github.com/gotd/td@latest
-
-# Копируем код и собираем
 COPY main.go .
+
+# Теперь tidy отработает без ошибок, так как импорты в main.go существуют
+RUN go mod tidy
 RUN CGO_ENABLED=0 GOOS=linux go build -o server main.go
 
 FROM alpine:latest
