@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+
+	"github.com/gotd/td/telegram"
 )
 
 func main() {
@@ -12,9 +14,11 @@ func main() {
 		port = "8080"
 	}
 
+	// Клиент gotd
+	_ = telegram.Client{}
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("OK"))
+		w.Write([]byte("MTProto Bot Service is running!"))
 	})
 
 	fmt.Println("Server running on port:", port)
