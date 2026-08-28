@@ -1,24 +1,28 @@
 package main
 
 import (
-	"context"
 	"fmt"
+	"net"
 	"os"
 
-	"github.com/gotd/td/telegram/server"
+	"github.com/gotd/td/telegram"
 )
 
 func main() {
-	// Порт берется из переменной окружения хостинга или ставится 8080 по умолчанию
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 
-	s := server.New(server.Options{})
-
-	fmt.Printf("MTProto сервер запущен на порту %s...\n", port)
-	if err := s.Run(context.Background()); err != nil {
+	listener, err := net.Listen("tcp", ":"+port)
+	if err != nil {
 		panic(err)
 	}
+	defer listener.Close()
+
+	fmt.Println("MTProto Server started on port:", port)
+
+	_ = telegram.NewClient(1, "app_hash", telegram.Options{})
+
+	select {}
 }
