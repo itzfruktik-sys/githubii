@@ -3,12 +3,11 @@ WORKDIR /app
 
 RUN apk add --no-cache git ca-certificates
 
-# Копируем go.mod и качаем зависимости
-COPY go.mod ./
-RUN go mod download
+# Копируем исходники и модуль
+COPY main.go go.mod ./
 
-# Копируем код и собираем
-COPY main.go ./
+# Автоматически подтягиваем все связки перед сборкой
+RUN go mod tidy
 RUN CGO_ENABLED=0 GOOS=linux go build -o server main.go
 
 FROM alpine:latest
