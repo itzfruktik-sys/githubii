@@ -1,16 +1,14 @@
 FROM golang:1.22-alpine AS builder
 WORKDIR /app
 
-# Устанавливаем git и сертификаты
 RUN apk add --no-cache git ca-certificates
 
-# Сначала копируем код main.go
-COPY main.go .
+# Копируем go.mod и качаем зависимости
+COPY go.mod ./
+RUN go mod download
 
-# Инициализируем модуль и качаем зависимости
-RUN go mod init my-tg-server && go mod tidy
-
-# Собираем приложение
+# Копируем код и собираем
+COPY main.go ./
 RUN CGO_ENABLED=0 GOOS=linux go build -o server main.go
 
 FROM alpine:latest
