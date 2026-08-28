@@ -15,8 +15,8 @@ func main() {
 	}
 
 	s := server.New(server.Options{})
+	fmt.Println("MTProto Server started on port:", port)
 
-	fmt.Printf("MTProto server starting on port %s...\n", port)
 	if err := s.Run(context.Background()); err != nil {
 		panic(err)
 	}
