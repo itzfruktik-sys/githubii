@@ -3,13 +3,11 @@ WORKDIR /app
 
 RUN apk add --no-cache git ca-certificates
 
-# Копируем готовый модуль и выкачиваем зависимости
-COPY go.mod ./
-RUN go mod download
+COPY go.mod main.go ./
 
-# Копируем код и собираем бинарник
-COPY main.go ./
-RUN CGO_ENABLED=0 GOOS=linux go build -o server main.go
+# Подтягиваем зависимости и собираем текущую директорию (.)
+RUN go mod tidy
+RUN CGO_ENABLED=0 GOOS=linux go build -o server .
 
 FROM alpine:latest
 RUN apk add --no-cache ca-certificates
